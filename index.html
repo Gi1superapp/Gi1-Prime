@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Gi1 Prime Card</title>
+<meta name="description" content="The Gi1 Prime Card in 3D and AR. Scan, watch, explore, download the Gi1 Prime App.">
+<meta property="og:title" content="The Gi1 Prime Card">
+<meta property="og:description" content="ALL IN 1, IN Gi1. See the card come alive in 3D and AR.">
+<meta name="theme-color" content="#0a1f45">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<meta property="og:image" content="assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" as="image" href="assets/front.jpg">
+<link rel="preload" as="image" href="assets/logo.jpg">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap">
+<style>
+:root{--bg:#071a3d;--ink:#fff7e0;--mute:#b4c2de;--panel:#0f2c63;--line:#2b4f93;color-scheme:dark;
+ --gold:linear-gradient(135deg,#7a5208 0%,#e9b53a 18%,#fff2b3 34%,#f0c24a 50%,#a9740c 66%,#f6d778 82%,#7a5208 100%);
+ --goldl:linear-gradient(135deg,#fff3b0 0%,#f3c94f 28%,#c58e12 55%,#ffe58a 78%,#b27c0c 100%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#071a3d;--ink:#fff7e0}}
+:root[data-theme="dark"]{--bg:#071a3d;--ink:#fff7e0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-snap-type:y proximity}
+body{margin:0;background:radial-gradient(90% 55% at 50% 22%,#1a56b0 0%,transparent 70%),var(--bg);color:var(--ink);font-family:"Poppins","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;font-size:15px}
+body.ar,body.lock{overflow:hidden}
+#stage{position:fixed;inset:0;z-index:0;touch-action:pan-y}#stage canvas{display:block}
+.st{height:100vh;height:100svh;scroll-snap-align:start}
+#cam{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;display:none;background:#000;z-index:-1}
+body.ar{background:#000}
+@keyframes shim{to{background-position:200% 0}}@keyframes shn{0%{left:-60%}60%,100%{left:130%}}@keyframes bob{50%{transform:translateY(6px)}}
+.gtxt{background:var(--gold);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shim 4s linear infinite}
+#top{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:calc(8px + env(safe-area-inset-top,0px)) 14px 8px;background:linear-gradient(rgba(5,16,38,.85),transparent)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px}.brand img{width:30px;height:30px;border-radius:8px}
+#lang{display:flex;gap:5px}#lang button{min-height:32px;padding:4px 11px;font-size:13px;border-radius:18px}
+button,a.btn{font:inherit;font-size:15px;font-weight:600;color:var(--ink);background:rgba(15,44,99,.92);border:1px solid var(--line);border-radius:14px;padding:11px 16px;min-height:46px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;backdrop-filter:blur(6px)}
+button:focus-visible,a.btn:focus-visible,input:focus-visible{outline:2px solid #f6d778;outline-offset:2px}
+.gold,button.pri{background:var(--goldl);color:#2a1a00;border-color:#fff0a8;text-shadow:0 1px 0 rgba(255,255,255,.45);box-shadow:0 2px 14px rgba(240,190,70,.4),inset 0 1px 0 rgba(255,255,255,.7)}
+.green{background:linear-gradient(135deg,#34d37a,#12a150);border-color:#7bf0ab;color:#04290f}
+#dock{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;gap:9px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,rgba(5,16,38,.96) 30%);justify-content:center}
+#dock .btn,#dock button{min-height:54px}#dock .main{flex:1;max-width:320px;font-size:16px;position:relative;overflow:hidden}
+#dock .main::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-20deg);animation:shn 3s infinite}
+#dock .ico{width:52px;padding:0;flex:none}#dock img{height:24px}#dock svg{width:25px;height:25px}
+#hb{position:fixed;left:0;right:0;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:25;display:flex;gap:8px;justify-content:center;padding:0 14px;transition:opacity .4s,transform .4s}
+#hb button{flex:1 1 30%;max-width:170px;font-size:14px;padding:9px 6px}
+#hb.off{opacity:0;pointer-events:none;transform:translateY(14px)}
+#s5b{position:fixed;left:0;right:0;bottom:calc(98px + env(safe-area-inset-bottom,0px));z-index:25;display:flex;justify-content:center;padding:0 24px;transition:opacity .4s,transform .4s}#s5b button{width:100%;max-width:320px;min-height:54px;font-size:16px}
+#s5b.off{opacity:0;pointer-events:none;transform:translateY(14px)}
+#vsnd{position:fixed;right:14px;bottom:calc(98px + env(safe-area-inset-bottom,0px));z-index:25;transition:opacity .4s;min-height:44px;padding:8px 14px;border-radius:22px;font-size:14px}#vsnd.off{opacity:0;pointer-events:none}
+#dots{position:fixed;right:8px;top:50%;transform:translateY(-50%);z-index:22;display:flex;flex-direction:column;gap:9px}#dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,247,224,.35);display:block;transition:all .3s}#dots i.on{background:#f6d778;height:20px;border-radius:4px}
+#sc{position:fixed;left:0;right:0;bottom:calc(150px + env(safe-area-inset-bottom,0px));text-align:center;z-index:21;color:var(--mute);font-size:12px;pointer-events:none;transition:opacity .4s}#sc span{display:block;font-size:20px;animation:bob 1.4s infinite;color:#f6d778}#sc.off{opacity:0}
+#arui{display:none;position:fixed;inset:0;z-index:40;pointer-events:none}body.ar #arui{display:block}body.ar #top,body.ar #dock,body.ar #hb,body.ar #s5b,body.ar #vsnd,body.ar #dots,body.ar #sc{display:none}
+#arui button{pointer-events:auto;position:absolute}#exitAR{top:calc(14px + env(safe-area-inset-top,0px));right:14px}#flip2{bottom:calc(60px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%)}
+#arhint{position:absolute;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom,0px));text-align:center;color:#fff;text-shadow:0 1px 4px #000;font-size:13px;padding:0 20px}
+#sheet{position:fixed;inset:0;z-index:60;display:none;background:rgba(3,10,26,.78);backdrop-filter:blur(4px)}
+#sheet .in{position:absolute;left:0;right:0;bottom:0;max-height:88vh;overflow:auto;background:linear-gradient(#0d2a5e,#071a3d);border-radius:24px 24px 0 0;border-top:2px solid #e9b53a;padding:18px 16px calc(24px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto}
+#sheet h3{margin:0 0 12px;font-size:18px}.stack{display:flex;flex-direction:column;gap:10px}.row2{display:flex;gap:8px}.row2>*{flex:1;min-width:0}
+.qrbox{display:flex;justify-content:center;padding:12px;background:#fff;border-radius:18px;border:4px solid #e9b53a;width:max-content;margin:6px auto 12px}.qrbox canvas{width:min(54vw,220px);height:min(54vw,220px);display:block}
+.lf input{font:inherit;font-size:16px;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:#071a3d;color:var(--ink)}
+#toast{position:fixed;left:50%;top:76px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--line);padding:10px 14px;border-radius:10px;font-size:13px;z-index:80;max-width:88%;text-align:center;display:none}
+#qrm{position:fixed;inset:0;z-index:70;background:rgba(3,10,26,.94);display:none;overflow:auto;padding:30px 18px;text-align:center}
+@media (prefers-reduced-motion:reduce){.gtxt,#dock .main::after,#sc span{animation:none}html{scroll-snap-type:none}}
+#splash{position:fixed;inset:0;z-index:100;background:radial-gradient(90% 55% at 50% 30%,#1a56b0,#071a3d 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .6s}#splash.gone{opacity:0;pointer-events:none}#splash img{width:96px;height:96px;border-radius:24px;box-shadow:0 0 40px rgba(240,194,74,.55);animation:bob 1.4s infinite}#splash b{font-size:20px}
+</style>
+</head>
+<body>
+<div id="splash"><img src="assets/logo.jpg" alt=""><b class="gtxt">Gi1 Prime Card</b></div>
+<model-viewer id="mv" ar ar-modes="webxr scene-viewer quick-look" ar-placement="floor" ar-scale="auto" reveal="auto" camera-controls alt="The Gi1 Prime Card" style="position:fixed;left:-20px;top:-20px;width:8px;height:8px;opacity:0;pointer-events:none"></model-viewer>
+<video id="cam" playsinline muted autoplay></video>
+<div id="stage"></div>
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2b3"/><stop offset=".5" stop-color="#f0c24a"/><stop offset="1" stop-color="#a9740c"/></linearGradient></defs></svg>
+<header id="top"><div class="brand"><img id="hlogo" alt=""><span class="gtxt">Gi1 Prime Card</span></div><div id="lang"></div></header>
+<div id="dots"></div>
+<div id="sc"><span>⌄</span><i data-i="scroll" style="font-style:normal">Scroll to explore</i></div>
+<div id="hb"><button id="bflip" data-i="flip">Flip card</button><button id="bar" class="pri" data-i="ar">AR view</button><button id="btab" data-i="table" style="display:none">Place on table</button></div>
+<div id="s5b" class="off"><button class="pri" id="touch" data-i="touch">Get in touch</button></div>
+<button id="vsnd" class="pri off" data-i="sound">Sound</button>
+<div id="arui"><button id="exitAR" data-i="exitar">Exit AR</button><button id="flip2" data-i="flip">Flip card</button><div id="arhint" data-i="arhint"></div></div>
+<nav id="dock"><a class="btn gold main" id="dl2" target="_blank" rel="noopener"><img id="playi2" alt=""><span data-i="dl2">Download app</span></a><a class="btn green ico" id="wa2" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="#04290f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-4.7A8.5 8.5 0 1 1 8 19.6L3 21z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2z"/></svg></a><a class="btn ico" id="call2" aria-label="Call"><svg viewBox="0 0 24 24" fill="none" stroke="url(#gg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></a><button class="ico" id="more" aria-label="More"><svg viewBox="0 0 24 24" fill="url(#gg)"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button></nav>
+<div id="sheet"><div class="in"><h3 class="gtxt" id="sh1" data-i="more">More</h3><div class="stack">
+ <div class="row2"><button id="bsave" data-i="save">Save contact</button><button id="bshare" data-i="share">Share</button></div>
+ <div class="qrbox"><canvas id="qrc" width="512" height="512"></canvas></div>
+ <button class="pri" id="qsave" data-i="qrsave">Save QR</button>
+ <h3 class="gtxt" style="margin:8px 0 0" data-i="touch">Get in touch</h3>
+ <div class="lf stack"><input id="ln" data-p="name" placeholder="Your name" autocomplete="name"><input id="lp" data-p="phone" placeholder="Your phone" inputmode="tel" autocomplete="tel"><button class="pri" id="lsend" data-i="send">Send on WhatsApp</button></div>
+ <button id="sclose" data-i="close">Close</button></div></div></div>
+<div id="qrm"><div style="max-width:420px;margin:0 auto"><h3 class="gtxt" data-i="save">Save contact</h3><p id="qrt" style="color:var(--mute)"></p><div class="qrbox"><canvas id="qrc2" width="512" height="512"></canvas></div><div class="row2"><button class="pri" id="qcopy" data-i="copy">Copy details</button><button id="qclose" data-i="close">Close</button></div></div></div>
+<div id="toast" role="status"></div>
+<div id="sp"><div class="st"></div><div class="st"></div><div class="st"></div><div class="st"></div><div class="st"></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+var A={"front": "assets/front.jpg", "back": "assets/back.jpg", "logo": "assets/logo.jpg", "poster": "assets/poster.jpg", "title": "assets/title.jpg", "feat": "assets/feat.jpg", "play": "assets/play.jpg", "social": "assets/social.jpg", "band": "assets/band.jpg", "sig": "assets/sig.jpg", "loc": "assets/loc.jpg", "phone": "assets/phone.jpg", "mail": "assets/mail.jpg", "web": "assets/web.jpg", "scan": "assets/scan.jpg", "arlab": "assets/arlab.jpg", "app": "assets/app.jpg", "vid": "assets/vid.mp4", "playicon": "assets/playicon.png"};
+var BASE=(function(){try{if(window.top===window&&/^https?:/.test(location.protocol)&&!/claude\.ai$/.test(location.hostname))return location.href.split("#")[0]}catch(e){}return "https://claude.ai/artifact/RnzigJ5AiCEtfdMPkAuVU8"})();
+var WAN="917777975877",PLAY="https://play.google.com/store/search?q=gi1%20prime%20app&c=apps",IG="https://instagram.com/gi1superapp",WEB="https://gi1superapp.com",YT="https://youtube.com/@gi1superapp",MAP="https://www.google.com/maps/search/?api=1&query=Vadodara",TEL="tel:+917777975877",MAIL="mailto:info@gi1superapp.com";
+var WAU="https://wa.me/"+WAN+"?text="+encodeURIComponent("Hi Gi1, I scanned your Prime Card.");
+var $=function(i){return document.getElementById(i)};function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+var still=matchMedia("(prefers-reduced-motion:reduce)").matches,LANG="en",inAR=false,xrOn=false;
+function toast(t){var e=$("toast");e.textContent=t;e.style.display="block";clearTimeout(toast._t);toast._t=setTimeout(function(){e.style.display="none"},3600)}
+function openLink(u){var a=document.createElement("a");a.href=u;a.target="_blank";a.rel="noopener";document.body.appendChild(a);a.click();a.remove()}
+function cv(w,h){var c=document.createElement("canvas");c.width=w;c.height=h;return c}
+function rr(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+/* ---------- text / languages ---------- */
+var I18N={en:{dl2:"Download app",flip:"Flip card",ar:"AR view",table:"Place on table",exitar:"Exit AR",sound:"Sound",arhint:"Point at a table or wall. Drag to turn, pinch to resize.",scroll:"Scroll to explore",more:"More",save:"Save contact",share:"Share",qrsave:"Save QR",touch:"Get in touch",name:"Your name",phone:"Your phone",send:"Send on WhatsApp",copied:"Link copied",saved:"Scan with another phone to save the contact",copy:"Copy details",close:"Close"},
+hi:{dl2:"ऐप डाउनलोड",flip:"कार्ड पलटें",ar:"AR व्यू",table:"मेज़ पर रखें",exitar:"AR बंद करें",sound:"आवाज़",arhint:"कैमरा मेज़ या दीवार की ओर करें। घुमाने के लिए खींचें, आकार के लिए पिंच करें।",scroll:"देखने के लिए स्क्रॉल करें",more:"और",save:"संपर्क सहेजें",share:"शेयर",qrsave:"QR सहेजें",touch:"संपर्क करें",name:"आपका नाम",phone:"आपका फ़ोन",send:"WhatsApp पर भेजें",copied:"लिंक कॉपी हो गया",saved:"संपर्क सहेजने के लिए दूसरे फ़ोन से स्कैन करें",copy:"विवरण कॉपी करें",close:"बंद करें"},
+gu:{dl2:"એપ ડાઉનલોડ",flip:"કાર્ડ પલટો",ar:"AR વ્યૂ",table:"ટેબલ પર મૂકો",exitar:"AR બંધ કરો",sound:"અવાજ",arhint:"કેમેરાને ટેબલ કે દીવાલ તરફ રાખો. ફેરવવા ખેંચો, માપ માટે પિંચ કરો.",scroll:"જોવા માટે સ્ક્રોલ કરો",more:"વધુ",save:"સંપર્ક સાચવો",share:"શેર",qrsave:"QR સાચવો",touch:"સંપર્ક કરો",name:"તમારું નામ",phone:"તમારો ફોન",send:"WhatsApp પર મોકલો",copied:"લિંક કૉપી થઈ",saved:"સંપર્ક સાચવવા બીજા ફોનથી સ્કેન કરો",copy:"વિગતો કૉપી કરો",close:"બંધ કરો"}};
+function T(k){return (I18N[LANG]&&I18N[LANG][k])||I18N.en[k]}
+function applyLang(){[].forEach.call(document.querySelectorAll("[data-i]"),function(e){e.textContent=T(e.getAttribute("data-i"))});[].forEach.call(document.querySelectorAll("[data-p]"),function(e){e.placeholder=T(e.getAttribute("data-p"))});
+  var L=$("lang");L.innerHTML="";[["en","EN"],["hi","हिं"],["gu","ગુ"]].forEach(function(p){var b=document.createElement("button");b.textContent=p[1];if(p[0]===LANG)b.className="pri";b.onclick=function(){LANG=p[0];applyLang()};L.appendChild(b)})}
+$("hlogo").src=A.logo;$("playi2").src=A.playicon;
+[["dl2",PLAY],["wa2",WAU],["call2",TEL]].forEach(function(p){$(p[0]).href=p[1]});
+/* ---------- sheet: contact, share, QR, lead ---------- */
+function vcard(){return "BEGIN:VCARD\nVERSION:3.0\nFN:Gi1 Prime App (Founder & CEO M.S.D)\nORG:Gi1\nTITLE:Founder & CEO\nTEL;TYPE=CELL:+917777975877\nEMAIL:info@gi1superapp.com\nURL:https://gi1superapp.com\nADR;TYPE=WORK:;;;Vadodara;Gujarat;;India\nEND:VCARD"}
+function qrTo(canvas,text,dark,light,lvl,logo){var d=document.createElement("div");try{new QRCode(d,{text:text,width:512,height:512,colorDark:dark,colorLight:light,correctLevel:lvl})}catch(e){return}
+  var src=d.querySelector("canvas");if(!src)return;var g=canvas.getContext("2d");g.drawImage(src,0,0,512,512);
+  if(logo){var im=new Image();im.onload=function(){g.fillStyle=light;rr(g,206,206,100,100,18);g.fill();g.save();rr(g,214,214,84,84,14);g.clip();g.drawImage(im,214,214,84,84);g.restore()};im.src=A.logo}}
+qrTo($("qrc"),BASE,"#10428f","#ffffff",QRCode.CorrectLevel.H,true);
+$("more").onclick=function(){$("sheet").style.display="block";document.body.classList.add("lock")};
+function closeSheet(){$("sheet").style.display="none";document.body.classList.remove("lock")}
+$("sclose").onclick=closeSheet;$("sheet").addEventListener("click",function(e){if(e.target===$("sheet"))closeSheet()});$("touch").onclick=function(){$("more").onclick();setTimeout(function(){$("ln").focus()},50)};
+$("bsave").onclick=function(){var v=vcard();try{var f=new File([v],"Gi1-contact.vcf",{type:"text/vcard"});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:"Gi1"}).catch(function(){});return}}catch(e){}
+  var c=$("qrc2");c.getContext("2d").clearRect(0,0,512,512);qrTo(c,v,"#10285a","#ffffff",QRCode.CorrectLevel.M,false);$("qrt").textContent=T("saved");$("qrm").style.display="block"};
+$("qcopy").onclick=function(){var v=vcard().replace(/\n/g,"\r\n");try{navigator.clipboard.writeText(v).then(function(){toast(T("copied"))},function(){toast("+91 77779 75877")})}catch(e){toast("+91 77779 75877")}};
+$("qclose").onclick=function(){$("qrm").style.display="none"};
+$("bshare").onclick=function(){try{if(navigator.share){navigator.share({title:"The Gi1 Prime Card",text:"ALL IN 1, IN Gi1",url:BASE}).catch(function(){});return}}catch(e){}try{navigator.clipboard.writeText(BASE).then(function(){toast(T("copied"))},function(){toast(BASE)})}catch(e){toast(BASE)}};
+$("lsend").onclick=function(){var n=$("ln").value.trim(),p=$("lp").value.trim();openLink("https://wa.me/"+WAN+"?text="+encodeURIComponent("Hi Gi1, I'm "+(n||"a visitor")+(p?" ("+p+")":"")+". I scanned your Prime Card and want to know more."))};
+$("qsave").onclick=function(){if(!window.claude||!claude.use){toast("Press and hold the QR to save it.");return}claude.use("downloads").then(function(D){if(!D){toast("Press and hold the QR to save it.");return}$("qrc").toBlob(function(b){D.save({filename:"gi1-prime-card-qr.png",data:b}).catch(function(){})})})};
+/* ---------- 3D scene ---------- */
+var NS=5,SP=8.6,Y=[0,-SP,-2*SP,-3*SP,-4*SP];
+var renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));$("stage").appendChild(renderer.domElement);
+var scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(40,1,.1,80);scene.add(camera);
+scene.add(new THREE.AmbientLight(0xffffff,.95));var dl=new THREE.DirectionalLight(0xffffff,.5);dl.position.set(3,4,6);scene.add(dl);
+var loader=new THREE.TextureLoader();function tex(s){var t=loader.load(s);t.anisotropy=8;return t}
+var GOLD=[[0,"#6e4a06"],[.15,"#d9a21b"],[.3,"#fff2b3"],[.45,"#f0c24a"],[.62,"#a9740c"],[.8,"#f6d778"],[1,"#7a5208"]];
+function gg(g,x0,y0,x1,y1){var r=g.createLinearGradient(x0,y0,x1,y1);GOLD.forEach(function(p){r.addColorStop(p[0],p[1])});return r}
+function goldTex(){var c=cv(256,256),g=c.getContext("2d");g.fillStyle=gg(g,0,0,256,256);g.fillRect(0,0,256,256);return new THREE.CanvasTexture(c)}
+var gt=goldTex(),stage=new THREE.Group();scene.add(stage);
+var camY=-.15,camT=-.15,aspect=.5;
+function fit(){var w=innerWidth,h=innerHeight;aspect=w/h;renderer.setSize(w,h);camera.aspect=aspect;camera.position.z=Math.max(4.3/(0.728*aspect),10.4);camera.updateProjectionMatrix();layoutBg()}
+/* parallax backdrop (child of camera) */
+var bgG=new THREE.Group();camera.add(bgG);
+var lc=cv(1024,1024),b=lc.getContext("2d");b.strokeStyle="rgba(255,214,120,.14)";b.lineWidth=2;for(var i=-16;i<32;i++){b.beginPath();b.moveTo(i*64,0);b.lineTo(i*64+1024,1024);b.stroke();b.beginPath();b.moveTo(i*64+1024,0);b.lineTo(i*64,1024);b.stroke()}
+for(var r=110;r<780;r+=80){b.strokeStyle="rgba(255,214,120,"+(0.2-r/5200)+")";b.lineWidth=r%160?1.5:3;b.beginPath();b.arc(512,512,r,0,6.3);b.stroke()}
+var lt=new THREE.CanvasTexture(lc);lt.wrapS=lt.wrapT=THREE.RepeatWrapping;lt.repeat.set(2,2);
+var lat=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.MeshBasicMaterial({map:lt,transparent:true,depthWrite:false,opacity:.9}));bgG.add(lat);
+var sc=cv(1024,1024),q=sc.getContext("2d");q.translate(512,512);for(i=0;i<24;i++){q.rotate(Math.PI/12);q.beginPath();q.moveTo(0,0);q.arc(0,0,512,-.07,.07);q.closePath();q.fillStyle="rgba(255,226,150,.22)";q.fill()}
+q.setTransform(1,0,0,1,0,0);q.globalCompositeOperation="destination-in";var mk=q.createRadialGradient(512,512,30,512,512,512);mk.addColorStop(0,"rgba(0,0,0,1)");mk.addColorStop(1,"rgba(0,0,0,0)");q.fillStyle=mk;q.fillRect(0,0,1024,1024);
+var sun=new THREE.Mesh(new THREE.PlaneGeometry(24,24),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(sc),transparent:true,depthWrite:false}));bgG.add(sun);
+function layoutBg(){var d=camera.position.z+3.2;lat.position.set(0,0,-d);sun.position.set(0,0,-d+1.4)}
+/* sparkles through the whole journey */
+var NP=190,P=new Float32Array(NP*3);for(i=0;i<NP;i++){P[i*3]=(Math.random()-.5)*7;P[i*3+1]=Y[NS-1]-5+Math.random()*(5-Y[NS-1]+5);P[i*3+2]=-1.5+Math.random()*2.6}
+var pg=new THREE.BufferGeometry();pg.setAttribute("position",new THREE.BufferAttribute(P,3));var dc=cv(64,64),d2=dc.getContext("2d"),dg=d2.createRadialGradient(32,32,0,32,32,32);dg.addColorStop(0,"rgba(255,240,180,1)");dg.addColorStop(1,"rgba(255,240,180,0)");d2.fillStyle=dg;d2.fillRect(0,0,64,64);
+stage.add(new THREE.Points(pg,new THREE.PointsMaterial({size:.14,map:new THREE.CanvasTexture(dc),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending})));
+/* floating word badges (dim, far back) */
+function pill(txt,w,h,solid,op){var W=512,H=Math.round(512*h/w),c=cv(W,H),g=c.getContext("2d"),fs=Math.round(H*.44);g.font="700 "+fs+"px Poppins,'Segoe UI',Arial,sans-serif";while(g.measureText(txt).width>W-70&&fs>12){fs-=2;g.font="700 "+fs+"px Poppins,'Segoe UI',Arial,sans-serif"}
+  rr(g,4,4,W-8,H-8,(H-8)/2);if(solid){g.fillStyle=gg(g,0,0,W,H);g.fill();g.lineWidth=3;g.strokeStyle="#fff2b3";g.stroke();g.fillStyle="#2a1a00"}else{g.lineWidth=5;g.strokeStyle=gg(g,0,0,W,H);g.stroke();g.fillStyle=gg(g,0,0,W,0)}
+  g.textAlign="center";g.textBaseline="middle";g.fillText(txt,W/2,H/2+2);return new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false,opacity:op||1}))}
+var words=["CDSM","VIDEOS","HEALTH & FITNESS","JOBS","NEWS","OPEN CHATS & MORE","FREE REWARDS","ALL IN 1","GENIE COINS","SOCIAL UPDATES"],wm=words.map(function(t,i){var m=pill(t,2.2,.4,false,.28);var x=(i%2?1:-1)*(1.5+(i%3)*.4),y=2.5-i*3.9;m.position.set(x,y,-2.4);stage.add(m);return {m:m,x:x,y:y,ph:i*1.1}});
+/* ---------- the card (station 1) ---------- */
+var cardG=new THREE.Group(),CY=Y[0]+.9;cardG.position.set(0,CY,0);stage.add(cardG);
+var gm=new THREE.MeshStandardMaterial({map:gt,metalness:.5,roughness:.3,emissive:0x2a1c00});
+var card=new THREE.Mesh(new THREE.BoxGeometry(3.5,2.01,.07),[gm,gm,gm,gm,new THREE.MeshBasicMaterial({map:tex(A.front)}),new THREE.MeshBasicMaterial({map:tex(A.back)})]);cardG.add(card);
+var rings=[[2.55,1.1],[2.95,.35]].map(function(p){var t=new THREE.Mesh(new THREE.TorusGeometry(p[0],.025,12,140),new THREE.MeshBasicMaterial({map:gt,transparent:true,opacity:.7}));t.rotation.x=p[1];t.position.z=-.5;cardG.add(t);return t});
+var coin=new THREE.Group(),rim=new THREE.Mesh(new THREE.CylinderGeometry(.4,.4,.09,44,1,true),new THREE.MeshBasicMaterial({map:gt,side:THREE.DoubleSide}));rim.rotation.x=Math.PI/2;coin.add(rim);
+var cc=cv(256,256),cg=cc.getContext("2d"),ct=new THREE.CanvasTexture(cc),f1=new THREE.Mesh(new THREE.CircleGeometry(.4,44),new THREE.MeshBasicMaterial({map:ct,transparent:true})),f2=f1.clone();f1.position.z=.046;f2.position.z=-.046;f2.rotation.y=Math.PI;coin.add(f1,f2);
+cg.fillStyle=gg(cg,0,0,256,256);cg.beginPath();cg.arc(128,128,126,0,6.3);cg.fill();var li=new Image();li.onload=function(){cg.save();cg.beginPath();cg.arc(128,128,104,0,6.3);cg.clip();cg.drawImage(li,24,24,208,208);cg.restore();cg.lineWidth=5;cg.strokeStyle="#fff2b3";cg.beginPath();cg.arc(128,128,106,0,6.3);cg.stroke();ct.needsUpdate=true};li.src=A.logo;
+coin.position.set(1.5,CY+1.15,.5);stage.add(coin);
+/* ---------- stickers (gold framed pieces cut from your card) ---------- */
+var els=[],links=[],T0=[0,0,0,0,0],ACT=[false,false,false,false,false];
+function st(key,w,x,y,d,si,u,wipe){var m=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({transparent:true,depthWrite:false}));m.visible=false;var im=new Image();
+  im.onload=function(){var pad=36,fr=11,iw=im.width,ih=im.height,c=cv(iw+pad*2,ih+pad*2),g=c.getContext("2d"),rad=Math.min(iw,ih)*.15;
+    g.shadowColor="rgba(0,0,0,.5)";g.shadowBlur=24;g.shadowOffsetY=8;rr(g,pad-fr,pad-fr,iw+fr*2,ih+fr*2,rad+fr);g.fillStyle=gg(g,0,0,c.width,c.height);g.fill();g.shadowColor="transparent";
+    g.lineWidth=2;g.strokeStyle="rgba(70,45,0,.9)";g.stroke();g.save();rr(g,pad,pad,iw,ih,rad);g.clip();g.fillStyle="#fff";g.fillRect(pad,pad,iw,ih);g.drawImage(im,pad,pad);g.restore();g.lineWidth=2;g.strokeStyle="rgba(255,246,200,.9)";rr(g,pad-3,pad-3,iw+6,ih+6,rad+3);g.stroke();
+    var t=new THREE.CanvasTexture(c);t.anisotropy=8;m.material.map=t;m.material.needsUpdate=true;var k=w/iw,dd=m.userData;dd.sx=c.width*k;dd.sy=c.height*k;dd.pad=pad;dd.iw=iw;dd.W=c.width;m.scale.set(dd.sx,dd.sy,1)};
+  im.src=A[key]||key;var Y0=Y[si]+y;m.position.set(x,Y0,.3);stage.add(m);els.push({m:m,x:x,y:Y0,z:.3,d:d,s:1,si:si,ph:Math.random()*6,wipe:wipe});if(u){m.userData.u=u;links.push(m)}return m}
+var SOC=[[.125,IG],[.245,WAU],[.72,IG],[.87,WEB],[1.01,YT]];
+// station 1 - hero
+st("title",3.3,0,2.9,.5,0);st("play",3.55,0,-1.05,1.0,0,PLAY);
+// station 2 - video + signature
+// station 3 - info
+st("feat",3.6,0,3.0,.3,2);st("phone",1.7,-1.0,1.55,.6,2,TEL);st("web",1.65,1.0,1.55,.75,2,WEB);st("mail",3.2,0,-.2,.9,2,MAIL);st("loc",1.45,-1.0,-2.0,1.1,2,MAP);st("app",1.65,1.0,-1.95,1.25,2,PLAY);
+// station 2 signature (wipe) + station 4 QR + station 5 follow
+st("sig",1.9,0,-3.0,1.4,1,null,1);
+st("scan",3.5,0,3.0,.3,3);
+var qd=cv(572,572),qg=qd.getContext("2d");qg.fillStyle="#fff";qg.fillRect(0,0,572,572);
+var qtmp=cv(512,512);qrTo(qtmp,BASE,"#10428f","#ffffff",QRCode.CorrectLevel.H,false);qg.drawImage(qtmp,30,30,512,512);
+var qlogo=new Image();qlogo.onload=function(){qg.fillStyle="#fff";rr(qg,236,236,100,100,18);qg.fill();qg.save();rr(qg,244,244,84,84,14);qg.clip();qg.drawImage(qlogo,244,244,84,84);qg.restore();st(qd.toDataURL(),2.3,0,.6,.6,3)};qlogo.src=A.logo;
+st("arlab",3.3,0,-1.75,.9,3);
+st("social",3.55,0,1.9,.4,4,SOC);st("band",3.5,0,.2,.9,4);
+/* ---------- video (station 2) ---------- */
+var vEl=document.createElement("video");vEl.muted=true;vEl.loop=true;vEl.playsInline=true;vEl.setAttribute("playsinline","");vEl.preload="none";vEl.poster=A.poster;vEl.style.display="none";document.body.appendChild(vEl);
+var VW=3.0,VH=5.3,VY=Y[1]+.3,vg=new THREE.Group(),fc=cv(256,Math.round(256*(VH+.3)/(VW+.3))),fq=fc.getContext("2d");
+fq.fillStyle=gg(fq,0,0,fc.width,fc.height);rr(fq,0,0,fc.width,fc.height,30);fq.fill();fq.lineWidth=5;fq.strokeStyle="rgba(60,38,0,.85)";rr(fq,3,3,fc.width-6,fc.height-6,28);fq.stroke();fq.lineWidth=2;fq.strokeStyle="rgba(255,244,190,.95)";rr(fq,13,13,fc.width-26,fc.height-26,20);fq.stroke();
+var vf=new THREE.Mesh(new THREE.PlaneGeometry(VW+.3,VH+.3),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(fc),transparent:true}));vf.position.z=-.012;vg.add(vf);
+var vm=new THREE.MeshBasicMaterial({map:tex(A.poster)});vg.add(new THREE.Mesh(new THREE.PlaneGeometry(VW,VH),vm));var vtx=null;
+vEl.addEventListener("playing",function(){if(!vtx){vtx=new THREE.VideoTexture(vEl);vm.map=vtx;vm.needsUpdate=true}});
+vg.position.set(0,VY,.3);stage.add(vg);els.push({m:vg,x:0,y:VY,z:.3,d:.2,si:1,ph:2,noRot:1});
+var vb=pill("WATCH THE Gi1 STORY",2.0,.3,true);vb.position.set(0,VY+VH/2+.16,.5);stage.add(vb);els.push({m:vb,x:0,y:VY+VH/2+.16,z:.5,d:.7,si:1,ph:3,noRot:1});
+$("vsnd").onclick=function(){vEl.muted=!vEl.muted;if(!vEl.muted){var p=vEl.play();if(p&&p.catch)p.catch(function(){})}this.classList.toggle("pri",!vEl.muted)};
+/* ---------- progress dots ---------- */
+for(i=0;i<NS;i++){var dt=document.createElement("i");$("dots").appendChild(dt)}
+/* ---------- interaction ---------- */
+var yaw=-.5-6.283,pitch=.12,tYaw=-.5,tPitch=.12,cscale=.2,tScale=1,drag=false,moved=0,lx=0,ly=0,lock="",pts={},pinch0=0,gyro={x:0,y:0},sy0=0;
+function dist(){var k=Object.keys(pts);return Math.hypot(pts[k[0]][0]-pts[k[1]][0],pts[k[0]][1]-pts[k[1]][1])}
+function flip(){tYaw=(Math.round(tYaw/Math.PI)+1)*Math.PI}$("bflip").onclick=flip;$("flip2").onclick=flip;
+addEventListener("pointerdown",function(e){if(e.target.closest&&e.target.closest("button,a,input,#sheet,#qrm"))return;pts[e.pointerId]=[e.clientX,e.clientY];drag=true;moved=0;lock="";lx=e.clientX;ly=e.clientY;sy0=scrollY;if(Object.keys(pts).length==2)pinch0=dist()});
+addEventListener("pointermove",function(e){if(!pts[e.pointerId])return;pts[e.pointerId]=[e.clientX,e.clientY];
+  if(Object.keys(pts).length==2){var d=dist();if(pinch0&&inAR)tScale=clamp(tScale*d/pinch0,.4,2);pinch0=d;moved=99;return}
+  var dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
+  if(!lock){if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>3)lock="h";else if(Math.abs(dy)>5)lock="v"}
+  if(lock==="h"&&(inAR||scrollY<innerHeight*.6))tYaw+=dx*.012;if(lock==="h"&&inAR)tPitch=clamp(tPitch+dy*.004,-.8,.8)});
+function pickAt(e){var m=new THREE.Vector2(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1),rc=new THREE.Raycaster();rc.setFromCamera(m,camera);
+  var list=[card].concat(links.filter(function(x){return x.visible})),hs=rc.intersectObjects(list);if(!hs.length)return;var h=hs[0],o=h.object;
+  if(o===card){if(scrollY<innerHeight*.7||inAR)flip();return}var u=o.userData;if(typeof u.u==="string"){openLink(u.u);return}var f=(h.uv.x*u.W-u.pad)/u.iw;for(var i=0;i<u.u.length;i++)if(f<=u.u[i][0]){openLink(u.u[i][1]);return}openLink(u.u[u.u.length-1][1])}
+addEventListener("pointerup",function(e){if(!pts[e.pointerId])return;delete pts[e.pointerId];pinch0=0;if(!Object.keys(pts).length){if(drag&&moved<8&&Math.abs(scrollY-sy0)<4)pickAt(e);drag=false}});
+addEventListener("pointercancel",function(e){delete pts[e.pointerId];pinch0=0;drag=false});
+/* ---------- render loop ---------- */
+function back(x){return 1+2.70158*Math.pow(x-1,3)+1.70158*Math.pow(x-1,2)}
+var t0=performance.now();
+(function loop(){requestAnimationFrame(loop);if(xrOn)return;var now=performance.now(),s=(now-t0)/1000;
+  var maxS=Math.max(1,document.documentElement.scrollHeight-innerHeight),p=clamp(scrollY/maxS,0,1);
+  camT=inAR?CY:(-p*(NS-1)*SP-.15);camY+=(camT-camY)*.14;camera.position.y=camY;
+  var near=Math.round(p*(NS-1));[].forEach.call($("dots").children,function(d,i){d.className=i===near&&!inAR?"on":""});
+  if(!vEl.getAttribute("src")&&Math.abs(camY-Y[1])<18){vEl.src=A.vid;vEl.load()}
+  if(!window._fr)window._fr=0;if(++window._fr===4){$("splash").classList.add("gone");setTimeout(function(){var m=$("mv");if(m&&!m.getAttribute("src"))m.setAttribute("src","card.glb")},2500)}
+  for(var i=0;i<NS;i++){if(!ACT[i]&&Math.abs(camY-Y[i])<5.2){ACT[i]=true;T0[i]=now}}
+  $("hb").classList.toggle("off",near!==0);$("sc").classList.toggle("off",near!==0);$("s5b").classList.toggle("off",near!==NS-1);$("vsnd").classList.toggle("off",near!==1);
+  var vis=near===1||near===0&&p>.1;if(near===1){var pr=vEl.play();if(pr&&pr.catch)pr.catch(function(){})}else if(!vEl.paused&&Math.abs(camY-Y[1])>6)vEl.pause();
+  yaw+=(tYaw-yaw)*.12;pitch+=(tPitch-pitch)*.12;cscale+=(tScale-cscale)*.12;
+  cardG.rotation.y=yaw+(inAR?gyro.x:0);cardG.rotation.x=pitch+(inAR?gyro.y:0);cardG.scale.setScalar(cscale);cardG.position.y=CY+(still?0:Math.sin(s*1.3)*.05);
+  if(!still&&!drag&&s>4&&!inAR&&Math.abs(camY-Y[0])<3)tYaw+=.0018;
+  coin.rotation.y=still?0:s*1.5;coin.position.y=CY+1.15+(still?0:Math.sin(s*1.7)*.06);coin.visible=!inAR;rings.forEach(function(r){r.visible=!inAR});rings[0].rotation.z=s*.15;rings[1].rotation.y=s*.12;rings[1].rotation.z=-s*.1;
+  bgG.visible=!inAR;sun.rotation.z=s*.08;lt.offset.y=-camY*.02;lt.offset.x=Math.sin(s*.05)*.02;
+  wm.forEach(function(w){w.m.visible=!inAR;w.m.position.x=w.x+Math.sin(s*.25+w.ph)*.4;w.m.position.y=w.y+Math.sin(s*.4+w.ph)*.1});
+  for(var j=0;j<NP;j++){P[j*3+1]+=.006;if(P[j*3+1]>6)P[j*3+1]=Y[NS-1]-5}pg.attributes.position.needsUpdate=true;
+  els.forEach(function(o){var u=o.m.userData,sx=1,sy=1,m=o.m;if(o.s){if(!u.sx)return;sx=u.sx;sy=u.sy}
+    if(inAR){m.visible=false;return}
+    var k=still?1:clamp((now-T0[o.si]-o.d*1000)/700,0,1)*(ACT[o.si]?1:0),b=still?1:back(k);
+    if(o.wipe){var w=still?1:clamp((now-T0[o.si]-o.d*1000)/900,0,1)*(ACT[o.si]?1:0);w=1-Math.pow(1-w,3);m.material.map.repeat.x=Math.max(w,.001);m.scale.set(sx*Math.max(w,.001),sy,1);m.position.set(o.x-sx/2+sx*w/2,o.y,o.z);m.visible=w>.01;return}
+    m.visible=k>.01;m.scale.set(sx*Math.max(b,.01),sy*Math.max(b,.01),1);m.position.set(o.x,o.y+(still?0:Math.sin(s*1.3+o.ph)*.03),o.z)});
+  renderer.render(scene,camera)})();
+/* ---------- AR camera ---------- */
+var stream=null;function onOri(e){if(e.gamma==null)return;gyro.x=clamp(e.gamma/45,-1,1)*.35;gyro.y=clamp((e.beta-60)/45,-1,1)*.25}
+function exitAR(){inAR=false;document.body.classList.remove("ar");if(stream){stream.getTracks().forEach(function(t){t.stop()});stream=null}$("cam").style.display="none";removeEventListener("deviceorientation",onOri);tScale=1;scrollTo(0,0)}
+$("exitAR").onclick=exitAR;
+$("bar").onclick=function(){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){toast("Camera isn’t available here. Open this page in Chrome or Safari.");return}
+  navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false}).then(function(s){
+    stream=s;var v=$("cam");v.srcObject=s;v.style.display="block";v.play&&v.play();scrollTo(0,0);inAR=true;document.body.classList.add("ar");tScale=.8;
+    if(window.DeviceOrientationEvent){if(typeof DeviceOrientationEvent.requestPermission==="function"){DeviceOrientationEvent.requestPermission().then(function(r){if(r==="granted")addEventListener("deviceorientation",onOri)}).catch(function(){})}else addEventListener("deviceorientation",onOri)}
+  }).catch(function(){toast("Camera is blocked. Allow camera access for this page, then tap AR view again.")})};
+/* ---------- place on table: real AR (Android Scene Viewer / WebXR, iPhone Quick Look) ---------- */
+$("btab").style.display="";
+var mob=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+$("btab").onclick=function(){var m=$("mv");
+  if(m&&m.activateAR&&m.canActivateAR){m.activateAR();return}
+  if(m&&!m.getAttribute("src"))m.setAttribute("src","card.glb");
+  if(m&&m.activateAR&&!m.loaded){toast("Loading the 3D card… tap again in a second.");return}
+  if(!mob){toast("Open this page on your phone to place the card on a table.");return}
+  toast("Table AR isn’t supported on this phone. Using camera view.");$("bar").click()};
+try{if("serviceWorker" in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js")}catch(e){}
+addEventListener("resize",fit);fit();applyLang();
+</script>
+</body>
+</html>
