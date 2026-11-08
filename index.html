@@ -62,6 +62,7 @@ button:focus-visible,a.btn:focus-visible,input:focus-visible{outline:2px solid #
 .lf input{font:inherit;font-size:16px;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:#071a3d;color:var(--ink)}
 #toast{position:fixed;left:50%;top:76px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--line);padding:10px 14px;border-radius:10px;font-size:13px;z-index:80;max-width:88%;text-align:center;display:none}
 #qrm{position:fixed;inset:0;z-index:70;background:rgba(3,10,26,.94);display:none;overflow:auto;padding:30px 18px;text-align:center}
+#s4b{position:fixed;left:0;right:0;bottom:calc(98px + env(safe-area-inset-bottom,0px));z-index:25;display:flex;justify-content:center;padding:0 24px;transition:opacity .4s,transform .4s}#s4b button{width:100%;max-width:320px;min-height:54px;font-size:16px}#s4b.off{opacity:0;pointer-events:none;transform:translateY(14px)}body.ar #s4b{display:none}
 @media (prefers-reduced-motion:reduce){.gtxt,#dock .main::after,#sc span{animation:none}html{scroll-snap-type:none}}
 #splash{position:fixed;inset:0;z-index:100;background:radial-gradient(90% 55% at 50% 30%,#1a56b0,#071a3d 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .6s}#splash.gone{opacity:0;pointer-events:none}#splash img{width:96px;height:96px;border-radius:24px;box-shadow:0 0 40px rgba(240,194,74,.55);animation:bob 1.4s infinite}#splash b{font-size:20px}
 </style>
@@ -76,9 +77,10 @@ button:focus-visible,a.btn:focus-visible,input:focus-visible{outline:2px solid #
 <div id="dots"></div>
 <div id="sc"><span>⌄</span><i data-i="scroll" style="font-style:normal">Scroll to explore</i></div>
 <div id="hb"><button id="bflip" data-i="flip">Flip card</button><button id="bar" class="pri" data-i="ar">AR view</button><button id="btab" data-i="table" style="display:none">Place on table</button></div>
+<div id="s4b" class="off"><button class="pri" id="sqr" data-i="qrsave">Save QR</button></div>
 <div id="s5b" class="off"><button class="pri" id="touch" data-i="touch">Get in touch</button></div>
 <button id="vsnd" class="pri off" data-i="sound">Sound</button>
-<div id="arui"><button id="exitAR" data-i="exitar">Exit AR</button><button id="flip2" data-i="flip">Flip card</button><div id="arhint" data-i="arhint"></div></div>
+<div id="arui"><button id="exitAR" data-i="exitar">Exit AR</button><button id="flip2" data-i="reset">Reset view</button><div id="arhint" data-i="arhint"></div></div>
 <nav id="dock"><a class="btn gold main" id="dl2" target="_blank" rel="noopener"><img id="playi2" alt=""><span data-i="dl2">Download app</span></a><a class="btn green ico" id="wa2" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="#04290f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-4.7A8.5 8.5 0 1 1 8 19.6L3 21z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2z"/></svg></a><a class="btn ico" id="call2" aria-label="Call"><svg viewBox="0 0 24 24" fill="none" stroke="url(#gg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></a><button class="ico" id="more" aria-label="More"><svg viewBox="0 0 24 24" fill="url(#gg)"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button></nav>
 <div id="sheet"><div class="in"><h3 class="gtxt" id="sh1" data-i="more">More</h3><div class="stack">
  <div class="row2"><button id="bsave" data-i="save">Save contact</button><button id="bshare" data-i="share">Share</button></div>
@@ -105,9 +107,9 @@ function openLink(u){var a=document.createElement("a");a.href=u;a.target="_blank
 function cv(w,h){var c=document.createElement("canvas");c.width=w;c.height=h;return c}
 function rr(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
 /* ---------- text / languages ---------- */
-var I18N={en:{dl2:"Download app",flip:"Flip card",ar:"AR view",table:"Place on table",exitar:"Exit AR",sound:"Sound",arhint:"Point at a table or wall. Drag to turn, pinch to resize.",scroll:"Scroll to explore",more:"More",save:"Save contact",share:"Share",qrsave:"Save QR",touch:"Get in touch",name:"Your name",phone:"Your phone",send:"Send on WhatsApp",copied:"Link copied",saved:"Scan with another phone to save the contact",copy:"Copy details",close:"Close"},
-hi:{dl2:"ऐप डाउनलोड",flip:"कार्ड पलटें",ar:"AR व्यू",table:"मेज़ पर रखें",exitar:"AR बंद करें",sound:"आवाज़",arhint:"कैमरा मेज़ या दीवार की ओर करें। घुमाने के लिए खींचें, आकार के लिए पिंच करें।",scroll:"देखने के लिए स्क्रॉल करें",more:"और",save:"संपर्क सहेजें",share:"शेयर",qrsave:"QR सहेजें",touch:"संपर्क करें",name:"आपका नाम",phone:"आपका फ़ोन",send:"WhatsApp पर भेजें",copied:"लिंक कॉपी हो गया",saved:"संपर्क सहेजने के लिए दूसरे फ़ोन से स्कैन करें",copy:"विवरण कॉपी करें",close:"बंद करें"},
-gu:{dl2:"એપ ડાઉનલોડ",flip:"કાર્ડ પલટો",ar:"AR વ્યૂ",table:"ટેબલ પર મૂકો",exitar:"AR બંધ કરો",sound:"અવાજ",arhint:"કેમેરાને ટેબલ કે દીવાલ તરફ રાખો. ફેરવવા ખેંચો, માપ માટે પિંચ કરો.",scroll:"જોવા માટે સ્ક્રોલ કરો",more:"વધુ",save:"સંપર્ક સાચવો",share:"શેર",qrsave:"QR સાચવો",touch:"સંપર્ક કરો",name:"તમારું નામ",phone:"તમારો ફોન",send:"WhatsApp પર મોકલો",copied:"લિંક કૉપી થઈ",saved:"સંપર્ક સાચવવા બીજા ફોનથી સ્કેન કરો",copy:"વિગતો કૉપી કરો",close:"બંધ કરો"}};
+var I18N={en:{dl2:"Download app",flip:"Flip card",ar:"AR view",table:"Place on table",exitar:"Exit AR",sound:"Sound",arhint:"Pinch to zoom · Drag to turn. Tap any piece to open it.",scroll:"Scroll to explore",more:"More",save:"Save contact",share:"Share",qrsave:"Save QR",touch:"Get in touch",name:"Your name",phone:"Your phone",send:"Send on WhatsApp",copied:"Link copied",qrdone:"QR saved to your downloads",reset:"Reset view",saved:"Scan with another phone to save the contact",copy:"Copy details",close:"Close"},
+hi:{dl2:"ऐप डाउनलोड",flip:"कार्ड पलटें",ar:"AR व्यू",table:"मेज़ पर रखें",exitar:"AR बंद करें",sound:"आवाज़",arhint:"ज़ूम के लिए पिंच करें · घुमाने के लिए खींचें। खोलने के लिए किसी भी हिस्से पर टैप करें।",scroll:"देखने के लिए स्क्रॉल करें",more:"और",save:"संपर्क सहेजें",share:"शेयर",qrsave:"QR सहेजें",touch:"संपर्क करें",name:"आपका नाम",phone:"आपका फ़ोन",send:"WhatsApp पर भेजें",copied:"लिंक कॉपी हो गया",qrdone:"QR आपके डाउनलोड में सेव हो गया",reset:"व्यू रीसेट",saved:"संपर्क सहेजने के लिए दूसरे फ़ोन से स्कैन करें",copy:"विवरण कॉपी करें",close:"बंद करें"},
+gu:{dl2:"એપ ડાઉનલોડ",flip:"કાર્ડ પલટો",ar:"AR વ્યૂ",table:"ટેબલ પર મૂકો",exitar:"AR બંધ કરો",sound:"અવાજ",arhint:"ઝૂમ માટે પિંચ કરો · ફેરવવા ખેંચો. ખોલવા માટે કોઈ પણ ભાગ પર ટેપ કરો.",scroll:"જોવા માટે સ્ક્રોલ કરો",more:"વધુ",save:"સંપર્ક સાચવો",share:"શેર",qrsave:"QR સાચવો",touch:"સંપર્ક કરો",name:"તમારું નામ",phone:"તમારો ફોન",send:"WhatsApp પર મોકલો",copied:"લિંક કૉપી થઈ",qrdone:"QR તમારા ડાઉનલોડમાં સાચવાયું",reset:"વ્યૂ રીસેટ",saved:"સંપર્ક સાચવવા બીજા ફોનથી સ્કેન કરો",copy:"વિગતો કૉપી કરો",close:"બંધ કરો"}};
 function T(k){return (I18N[LANG]&&I18N[LANG][k])||I18N.en[k]}
 function applyLang(){[].forEach.call(document.querySelectorAll("[data-i]"),function(e){e.textContent=T(e.getAttribute("data-i"))});[].forEach.call(document.querySelectorAll("[data-p]"),function(e){e.placeholder=T(e.getAttribute("data-p"))});
   var L=$("lang");L.innerHTML="";[["en","EN"],["hi","हिं"],["gu","ગુ"]].forEach(function(p){var b=document.createElement("button");b.textContent=p[1];if(p[0]===LANG)b.className="pri";b.onclick=function(){LANG=p[0];applyLang()};L.appendChild(b)})}
@@ -121,14 +123,22 @@ function qrTo(canvas,text,dark,light,lvl,logo){var d=document.createElement("div
 qrTo($("qrc"),BASE,"#10428f","#ffffff",QRCode.CorrectLevel.H,true);
 $("more").onclick=function(){$("sheet").style.display="block";document.body.classList.add("lock")};
 function closeSheet(){$("sheet").style.display="none";document.body.classList.remove("lock")}
-$("sclose").onclick=closeSheet;$("sheet").addEventListener("click",function(e){if(e.target===$("sheet"))closeSheet()});$("touch").onclick=function(){$("more").onclick();setTimeout(function(){$("ln").focus()},50)};
+$("sclose").onclick=closeSheet;$("sqr").onclick=function(){qrSave()};$("sheet").addEventListener("click",function(e){if(e.target===$("sheet"))closeSheet()});$("touch").onclick=function(){$("more").onclick();setTimeout(function(){$("ln").focus()},50)};
 $("bsave").onclick=function(){var v=vcard();try{var f=new File([v],"Gi1-contact.vcf",{type:"text/vcard"});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:"Gi1"}).catch(function(){});return}}catch(e){}
   var c=$("qrc2");c.getContext("2d").clearRect(0,0,512,512);qrTo(c,v,"#10285a","#ffffff",QRCode.CorrectLevel.M,false);$("qrt").textContent=T("saved");$("qrm").style.display="block"};
 $("qcopy").onclick=function(){var v=vcard().replace(/\n/g,"\r\n");try{navigator.clipboard.writeText(v).then(function(){toast(T("copied"))},function(){toast("+91 77779 75877")})}catch(e){toast("+91 77779 75877")}};
 $("qclose").onclick=function(){$("qrm").style.display="none"};
 $("bshare").onclick=function(){try{if(navigator.share){navigator.share({title:"The Gi1 Prime Card",text:"ALL IN 1, IN Gi1",url:BASE}).catch(function(){});return}}catch(e){}try{navigator.clipboard.writeText(BASE).then(function(){toast(T("copied"))},function(){toast(BASE)})}catch(e){toast(BASE)}};
 $("lsend").onclick=function(){var n=$("ln").value.trim(),p=$("lp").value.trim();openLink("https://wa.me/"+WAN+"?text="+encodeURIComponent("Hi Gi1, I'm "+(n||"a visitor")+(p?" ("+p+")":"")+". I scanned your Prime Card and want to know more."))};
-$("qsave").onclick=function(){if(!window.claude||!claude.use){toast("Press and hold the QR to save it.");return}claude.use("downloads").then(function(D){if(!D){toast("Press and hold the QR to save it.");return}$("qrc").toBlob(function(b){D.save({filename:"gi1-prime-card-qr.png",data:b}).catch(function(){})})})};
+function dlBlob(b,name){var u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},5000)}
+function saveCanvas(c,name){c.toBlob(function(b){if(!b){toast("Could not make the image.");return}
+  if(window.claude&&claude.use){claude.use("downloads").then(function(D){if(D)D.save({filename:name,data:b}).catch(function(){dlBlob(b,name)});else dlBlob(b,name)}).catch(function(){dlBlob(b,name)});return}
+  dlBlob(b,name);toast(T("qrdone"))},"image/png")}
+function qrSave(){var S=1600,pad=120,c=cv(S+pad*2,S+pad*2),g=c.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,c.width,c.height);
+  var d=document.createElement("div");try{new QRCode(d,{text:BASE,width:S,height:S,colorDark:"#10428f",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H})}catch(e){toast("QR failed");return}
+  var src=d.querySelector("canvas");if(!src)return;var sz=src.width;g.drawImage(src,pad+(S-sz)/2,pad+(S-sz)/2,sz,sz);
+  var im=new Image();im.onload=function(){var L=sz*.2,x=c.width/2-L/2,y=c.height/2-L/2;g.fillStyle="#fff";rr(g,x-14,y-14,L+28,L+28,40);g.fill();g.save();rr(g,x,y,L,L,30);g.clip();g.drawImage(im,x,y,L,L);g.restore();saveCanvas(c,"gi1-prime-card-qr.png")};im.onerror=function(){saveCanvas(c,"gi1-prime-card-qr.png")};im.src=A.logo}
+$("qsave").onclick=qrSave;
 /* ---------- 3D scene ---------- */
 var NS=5,SP=8.6,Y=[0,-SP,-2*SP,-3*SP,-4*SP];
 var renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));$("stage").appendChild(renderer.domElement);
@@ -140,7 +150,7 @@ function gg(g,x0,y0,x1,y1){var r=g.createLinearGradient(x0,y0,x1,y1);GOLD.forEac
 function goldTex(){var c=cv(256,256),g=c.getContext("2d");g.fillStyle=gg(g,0,0,256,256);g.fillRect(0,0,256,256);return new THREE.CanvasTexture(c)}
 var gt=goldTex(),stage=new THREE.Group();scene.add(stage);
 var camY=-.15,camT=-.15,aspect=.5;
-function fit(){var w=innerWidth,h=innerHeight;aspect=w/h;renderer.setSize(w,h);camera.aspect=aspect;camera.position.z=Math.max(4.3/(0.728*aspect),10.4);camera.updateProjectionMatrix();layoutBg()}
+function fit(){var w=innerWidth,h=innerHeight;aspect=w/h;renderer.setSize(w,h);camera.aspect=aspect;zBase=Math.max(4.3/(0.728*aspect),10.4);if(!inAR)camera.position.z=zBase;if(inAR)calcArZ();camera.updateProjectionMatrix();layoutBg()}
 /* parallax backdrop (child of camera) */
 var bgG=new THREE.Group();camera.add(bgG);
 var lc=cv(1024,1024),b=lc.getContext("2d");b.strokeStyle="rgba(255,214,120,.14)";b.lineWidth=2;for(var i=-16;i<32;i++){b.beginPath();b.moveTo(i*64,0);b.lineTo(i*64+1024,1024);b.stroke();b.beginPath();b.moveTo(i*64+1024,0);b.lineTo(i*64,1024);b.stroke()}
@@ -188,7 +198,7 @@ st("sig",1.9,0,-3.0,1.4,1,null,1);
 st("scan",3.5,0,3.0,.3,3);
 var qd=cv(572,572),qg=qd.getContext("2d");qg.fillStyle="#fff";qg.fillRect(0,0,572,572);
 var qtmp=cv(512,512);qrTo(qtmp,BASE,"#10428f","#ffffff",QRCode.CorrectLevel.H,false);qg.drawImage(qtmp,30,30,512,512);
-var qlogo=new Image();qlogo.onload=function(){qg.fillStyle="#fff";rr(qg,236,236,100,100,18);qg.fill();qg.save();rr(qg,244,244,84,84,14);qg.clip();qg.drawImage(qlogo,244,244,84,84);qg.restore();st(qd.toDataURL(),2.3,0,.6,.6,3)};qlogo.src=A.logo;
+var qlogo=new Image();qlogo.onload=function(){qg.fillStyle="#fff";rr(qg,236,236,100,100,18);qg.fill();qg.save();rr(qg,244,244,84,84,14);qg.clip();qg.drawImage(qlogo,244,244,84,84);qg.restore();qrURL=qd.toDataURL();st(qrURL,2.3,0,.6,.6,3)};qlogo.src=A.logo;
 st("arlab",3.3,0,-1.75,.9,3);
 st("social",3.55,0,1.9,.4,4,SOC);st("band",3.5,0,.2,.9,4);
 /* ---------- video (station 2) ---------- */
@@ -201,20 +211,44 @@ vEl.addEventListener("playing",function(){if(!vtx){vtx=new THREE.VideoTexture(vE
 vg.position.set(0,VY,.3);stage.add(vg);els.push({m:vg,x:0,y:VY,z:.3,d:.2,si:1,ph:2,noRot:1});
 var vb=pill("WATCH THE Gi1 STORY",2.0,.3,true);vb.position.set(0,VY+VH/2+.16,.5);stage.add(vb);els.push({m:vb,x:0,y:VY+VH/2+.16,z:.5,d:.7,si:1,ph:3,noRot:1});
 $("vsnd").onclick=function(){vEl.muted=!vEl.muted;if(!vEl.muted){var p=vEl.play();if(p&&p.catch)p.catch(function(){})}this.classList.toggle("pri",!vEl.muted)};
+/* ---------- AR board: the whole card with every piece ---------- */
+var BRD={"land": {"plate": [-6.35, -4.7, 6.3, 4.35], "items": [{"n": "title", "k": "title", "w": 3.5, "x": -4.1, "y": 3.15, "z": 0.5}, {"n": "play", "k": "play", "w": 3.55, "x": -4.1, "y": -0.85, "z": 0.5}, {"n": "social", "k": "social", "w": 3.55, "x": -4.1, "y": -1.95, "z": 0.5}, {"n": "feat", "k": "feat", "w": 3.6, "x": -4.1, "y": -3.0, "z": 0.35}, {"n": "phone", "k": "phone", "w": 1.7, "x": -1.0, "y": 1.05, "z": 0.35}, {"n": "web", "k": "web", "w": 1.65, "x": 1.0, "y": 1.05, "z": 0.35}, {"n": "mail", "k": "mail", "w": 3.2, "x": 0, "y": -0.6, "z": 0.35}, {"n": "loc", "k": "loc", "w": 1.45, "x": -1.0, "y": -2.3, "z": 0.35}, {"n": "app", "k": "app", "w": 1.65, "x": 1.0, "y": -2.25, "z": 0.35}, {"n": "sig", "k": "sig", "w": 1.6, "x": 3.3, "y": -3.55, "z": 0.45}, {"n": "qr", "k": "qr", "w": 1.4, "x": 5.15, "y": -3.55, "z": 0.45}], "video": {"w": 3.0, "h": 5.3, "x": 4.1, "y": 0.9}, "cards": [{"x": -4.1, "y": 1.2, "f": "front", "b": "back"}, {"x": 0, "y": 3.0, "f": "back", "b": "front"}]}, "port": {"plate": [-4.2, -7.5, 4.2, 5.95], "items": [{"n": "title", "k": "title", "w": 3.4, "x": -2.0, "y": 5.05, "z": 0.5}, {"n": "play", "k": "play", "w": 3.5, "x": -2.0, "y": 1.4, "z": 0.5}, {"n": "social", "k": "social", "w": 3.5, "x": -2.0, "y": 0.25, "z": 0.5}, {"n": "feat", "k": "feat", "w": 3.5, "x": -2.0, "y": -0.8, "z": 0.35}, {"n": "mail", "k": "mail", "w": 3.4, "x": -2.0, "y": -2.4, "z": 0.35}, {"n": "sig", "k": "sig", "w": 1.9, "x": -2.0, "y": -4.3, "z": 0.45}, {"n": "qr", "k": "qr", "w": 1.6, "x": -2.0, "y": -6.2, "z": 0.45}, {"n": "phone", "k": "phone", "w": 1.55, "x": 1.1, "y": -4.55, "z": 0.35}, {"n": "web", "k": "web", "w": 1.55, "x": 2.9, "y": -4.55, "z": 0.35}, {"n": "loc", "k": "loc", "w": 1.4, "x": 1.1, "y": -6.1, "z": 0.35}, {"n": "app", "k": "app", "w": 1.55, "x": 2.9, "y": -6.1, "z": 0.35}], "video": {"w": 3.0, "h": 5.3, "x": 2.0, "y": -0.9}, "cards": [{"x": -2.0, "y": 3.3, "f": "front", "b": "back"}, {"x": 2.0, "y": 3.3, "f": "back", "b": "front"}]}},arG=new THREE.Group(),arIn=new THREE.Group(),arLinks=[],arEls=[],arT0=0,arBW=10,arBH=8,vm2=null,arZ=30,zBase=12,qrURL=null;
+arG.visible=false;arG.add(arIn);scene.add(arG);
+var BU={play:PLAY,social:SOC,phone:TEL,web:WEB,mail:MAIL,loc:MAP,app:PLAY};
+function arClear(){while(arIn.children.length){var o=arIn.children.pop();o.traverse(function(n){if(n.geometry)n.geometry.dispose();if(n.material){if(n.material.map&&n.material.map!==vtx&&n.material.map!==gt)n.material.map.dispose();n.material.dispose()}})}arLinks.length=0;arEls.length=0;vm2=null}
+function arSticker(key,w,x,y,z,u){var m=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({transparent:true,depthWrite:false})),im=new Image();
+  im.onload=function(){var pad=36,fr=11,iw=im.width,ih=im.height,c=cv(iw+pad*2,ih+pad*2),g=c.getContext("2d"),rad=Math.min(iw,ih)*.15;
+    g.shadowColor="rgba(0,0,0,.5)";g.shadowBlur=24;g.shadowOffsetY=8;rr(g,pad-fr,pad-fr,iw+fr*2,ih+fr*2,rad+fr);g.fillStyle=gg(g,0,0,c.width,c.height);g.fill();g.shadowColor="transparent";
+    g.lineWidth=2;g.strokeStyle="rgba(70,45,0,.9)";g.stroke();g.save();rr(g,pad,pad,iw,ih,rad);g.clip();g.fillStyle="#fff";g.fillRect(pad,pad,iw,ih);g.drawImage(im,pad,pad);g.restore();g.lineWidth=2;g.strokeStyle="rgba(255,246,200,.9)";rr(g,pad-3,pad-3,iw+6,ih+6,rad+3);g.stroke();
+    var t=new THREE.CanvasTexture(c);t.anisotropy=8;m.material.map=t;m.material.needsUpdate=true;var k=w/iw,d=m.userData;d.sx=c.width*k;d.sy=c.height*k;d.pad=pad;d.iw=iw;d.W=c.width;m.scale.set(d.sx,d.sy,1)};
+  im.src=A[key]||key;m.position.set(x,y,z);arIn.add(m);if(u){m.userData.u=u;arLinks.push(m)}arEls.push({m:m,z:z,ph:Math.random()*6});return m}
+function buildBoard(L){arClear();var pl=L.plate,BW=pl[2]-pl[0],BH=pl[3]-pl[1],cx=(pl[0]+pl[2])/2,cy=(pl[1]+pl[3])/2;arBW=BW;arBH=BH;arIn.position.set(-cx,-cy,0);
+  var pc=cv(1024,Math.round(1024*BH/BW)),q=pc.getContext("2d");q.fillStyle="#0a2452";q.fillRect(0,0,pc.width,pc.height);q.strokeStyle="rgba(255,214,120,.16)";q.lineWidth=2;for(var i=-20;i<40;i++){q.beginPath();q.moveTo(i*60,0);q.lineTo(i*60+pc.height,pc.height);q.stroke();q.beginPath();q.moveTo(i*60+pc.height,0);q.lineTo(i*60,pc.height);q.stroke()}
+  q.lineWidth=7;q.strokeStyle=gg(q,0,0,pc.width,pc.height);rr(q,12,12,pc.width-24,pc.height-24,44);q.stroke();
+  var plate=new THREE.Mesh(new THREE.PlaneGeometry(BW,BH),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(pc)}));plate.position.set(cx,cy,-.05);arIn.add(plate);
+  var slab=new THREE.Mesh(new THREE.BoxGeometry(BW,BH,.4),new THREE.MeshStandardMaterial({map:gt,metalness:.5,roughness:.3,emissive:0x2a1c00}));slab.position.set(cx,cy,-.26);arIn.add(slab);
+  L.cards.forEach(function(c){var m=[gm,gm,gm,gm,new THREE.MeshBasicMaterial({map:tex(A[c.f])}),new THREE.MeshBasicMaterial({map:tex(A[c.b])})],mesh=new THREE.Mesh(new THREE.BoxGeometry(3.5,2.01,.07),m);mesh.position.set(c.x,c.y,.62);arIn.add(mesh);arEls.push({m:mesh,z:.62,ph:Math.random()*6})});
+  var V=L.video,fw=V.w+.3,fh=V.h+.3,fc2=cv(256,Math.round(256*fh/fw)),f2=fc2.getContext("2d");f2.fillStyle=gg(f2,0,0,fc2.width,fc2.height);rr(f2,0,0,fc2.width,fc2.height,30);f2.fill();f2.lineWidth=5;f2.strokeStyle="rgba(60,38,0,.85)";rr(f2,3,3,fc2.width-6,fc2.height-6,28);f2.stroke();f2.lineWidth=2;f2.strokeStyle="rgba(255,244,190,.95)";rr(f2,13,13,fc2.width-26,fc2.height-26,20);f2.stroke();
+  var vg2=new THREE.Group(),vf2=new THREE.Mesh(new THREE.PlaneGeometry(fw,fh),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(fc2),transparent:true}));vf2.position.z=-.012;vg2.add(vf2);
+  vm2=new THREE.MeshBasicMaterial({map:vtx||tex(A.poster)});vg2.add(new THREE.Mesh(new THREE.PlaneGeometry(V.w,V.h),vm2));vg2.position.set(V.x,V.y,.3);arIn.add(vg2);arEls.push({m:vg2,z:.3,ph:2});
+  L.items.forEach(function(it){if(it.k==="qr")arSticker(qrURL||qd.toDataURL(),it.w,it.x,it.y,it.z,null);else arSticker(it.k,it.w,it.x,it.y,it.z,BU[it.k])})}
+function calcArZ(){arZ=Math.max(arBW*1.06/(0.728*aspect),arBH*1.12/0.728)}
+function enterAR(){buildBoard(aspect<1?BRD.port:BRD.land);calcArZ();arT0=performance.now();yaw=tYaw=0;pitch=tPitch=.04;cscale=.3;tScale=1;arG.visible=true;stage.visible=false}
+function leaveAR(){arG.visible=false;stage.visible=true;yaw=tYaw=-.5;pitch=tPitch=.12;cscale=.2;tScale=1;arClear()}
 /* ---------- progress dots ---------- */
 for(i=0;i<NS;i++){var dt=document.createElement("i");$("dots").appendChild(dt)}
 /* ---------- interaction ---------- */
 var yaw=-.5-6.283,pitch=.12,tYaw=-.5,tPitch=.12,cscale=.2,tScale=1,drag=false,moved=0,lx=0,ly=0,lock="",pts={},pinch0=0,gyro={x:0,y:0},sy0=0;
 function dist(){var k=Object.keys(pts);return Math.hypot(pts[k[0]][0]-pts[k[1]][0],pts[k[0]][1]-pts[k[1]][1])}
-function flip(){tYaw=(Math.round(tYaw/Math.PI)+1)*Math.PI}$("bflip").onclick=flip;$("flip2").onclick=flip;
+function flip(){tYaw=(Math.round(tYaw/Math.PI)+1)*Math.PI}$("bflip").onclick=flip;$("flip2").onclick=function(){tYaw=0;tPitch=.04;tScale=1};
 addEventListener("pointerdown",function(e){if(e.target.closest&&e.target.closest("button,a,input,#sheet,#qrm"))return;pts[e.pointerId]=[e.clientX,e.clientY];drag=true;moved=0;lock="";lx=e.clientX;ly=e.clientY;sy0=scrollY;if(Object.keys(pts).length==2)pinch0=dist()});
 addEventListener("pointermove",function(e){if(!pts[e.pointerId])return;pts[e.pointerId]=[e.clientX,e.clientY];
-  if(Object.keys(pts).length==2){var d=dist();if(pinch0&&inAR)tScale=clamp(tScale*d/pinch0,.4,2);pinch0=d;moved=99;return}
+  if(Object.keys(pts).length==2){var d=dist();if(pinch0&&inAR)tScale=clamp(tScale*d/pinch0,.4,4);pinch0=d;moved=99;return}
   var dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
   if(!lock){if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>3)lock="h";else if(Math.abs(dy)>5)lock="v"}
   if(lock==="h"&&(inAR||scrollY<innerHeight*.6))tYaw+=dx*.012;if(lock==="h"&&inAR)tPitch=clamp(tPitch+dy*.004,-.8,.8)});
 function pickAt(e){var m=new THREE.Vector2(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1),rc=new THREE.Raycaster();rc.setFromCamera(m,camera);
-  var list=[card].concat(links.filter(function(x){return x.visible})),hs=rc.intersectObjects(list);if(!hs.length)return;var h=hs[0],o=h.object;
+  var list=inAR?arLinks:[card].concat(links.filter(function(x){return x.visible})),hs=rc.intersectObjects(list);if(!hs.length)return;var h=hs[0],o=h.object;
   if(o===card){if(scrollY<innerHeight*.7||inAR)flip();return}var u=o.userData;if(typeof u.u==="string"){openLink(u.u);return}var f=(h.uv.x*u.W-u.pad)/u.iw;for(var i=0;i<u.u.length;i++)if(f<=u.u[i][0]){openLink(u.u[i][1]);return}openLink(u.u[u.u.length-1][1])}
 addEventListener("pointerup",function(e){if(!pts[e.pointerId])return;delete pts[e.pointerId];pinch0=0;if(!Object.keys(pts).length){if(drag&&moved<8&&Math.abs(scrollY-sy0)<4)pickAt(e);drag=false}});
 addEventListener("pointercancel",function(e){delete pts[e.pointerId];pinch0=0;drag=false});
@@ -223,15 +257,16 @@ function back(x){return 1+2.70158*Math.pow(x-1,3)+1.70158*Math.pow(x-1,2)}
 var t0=performance.now();
 (function loop(){requestAnimationFrame(loop);if(xrOn)return;var now=performance.now(),s=(now-t0)/1000;
   var maxS=Math.max(1,document.documentElement.scrollHeight-innerHeight),p=clamp(scrollY/maxS,0,1);
-  camT=inAR?CY:(-p*(NS-1)*SP-.15);camY+=(camT-camY)*.14;camera.position.y=camY;
+  camT=inAR?0:(-p*(NS-1)*SP-.15);camera.position.z+=((inAR?arZ:zBase)-camera.position.z)*.15;layoutBg();camY+=(camT-camY)*.14;camera.position.y=camY;
   var near=Math.round(p*(NS-1));[].forEach.call($("dots").children,function(d,i){d.className=i===near&&!inAR?"on":""});
-  if(!vEl.getAttribute("src")&&Math.abs(camY-Y[1])<18){vEl.src=A.vid;vEl.load()}
+  if(!vEl.getAttribute("src")&&(Math.abs(camY-Y[1])<18||inAR)){vEl.src=A.vid;vEl.load()}
   if(!window._fr)window._fr=0;if(++window._fr===4){$("splash").classList.add("gone");setTimeout(function(){var m=$("mv");if(m&&!m.getAttribute("src"))m.setAttribute("src","card.glb")},2500)}
   for(var i=0;i<NS;i++){if(!ACT[i]&&Math.abs(camY-Y[i])<5.2){ACT[i]=true;T0[i]=now}}
-  $("hb").classList.toggle("off",near!==0);$("sc").classList.toggle("off",near!==0);$("s5b").classList.toggle("off",near!==NS-1);$("vsnd").classList.toggle("off",near!==1);
-  var vis=near===1||near===0&&p>.1;if(near===1){var pr=vEl.play();if(pr&&pr.catch)pr.catch(function(){})}else if(!vEl.paused&&Math.abs(camY-Y[1])>6)vEl.pause();
+  $("hb").classList.toggle("off",near!==0);$("sc").classList.toggle("off",near!==0);$("s5b").classList.toggle("off",near!==NS-1);$("s4b").classList.toggle("off",near!==3);$("vsnd").classList.toggle("off",near!==1);
+  if(near===1||inAR){var pr=vEl.play();if(pr&&pr.catch)pr.catch(function(){})}else if(!vEl.paused&&Math.abs(camY-Y[1])>6)vEl.pause();
   yaw+=(tYaw-yaw)*.12;pitch+=(tPitch-pitch)*.12;cscale+=(tScale-cscale)*.12;
-  cardG.rotation.y=yaw+(inAR?gyro.x:0);cardG.rotation.x=pitch+(inAR?gyro.y:0);cardG.scale.setScalar(cscale);cardG.position.y=CY+(still?0:Math.sin(s*1.3)*.05);
+  cardG.rotation.y=yaw;cardG.rotation.x=pitch;cardG.scale.setScalar(cscale);cardG.position.y=CY+(still?0:Math.sin(s*1.3)*.05);
+  if(inAR){var pk=still?1:back(clamp((now-arT0)/900,0,1));arG.rotation.y=yaw+gyro.x;arG.rotation.x=pitch+gyro.y;arG.scale.setScalar(Math.max(.01,cscale*pk));arG.position.y=still?0:Math.sin(s*1.2)*.08;arEls.forEach(function(o){o.m.position.z=o.z+(still?0:Math.sin(s*1.1+o.ph)*.07)});if(vm2&&vtx&&vm2.map!==vtx){vm2.map=vtx;vm2.needsUpdate=true}}
   if(!still&&!drag&&s>4&&!inAR&&Math.abs(camY-Y[0])<3)tYaw+=.0018;
   coin.rotation.y=still?0:s*1.5;coin.position.y=CY+1.15+(still?0:Math.sin(s*1.7)*.06);coin.visible=!inAR;rings.forEach(function(r){r.visible=!inAR});rings[0].rotation.z=s*.15;rings[1].rotation.y=s*.12;rings[1].rotation.z=-s*.1;
   bgG.visible=!inAR;sun.rotation.z=s*.08;lt.offset.y=-camY*.02;lt.offset.x=Math.sin(s*.05)*.02;
@@ -245,12 +280,12 @@ var t0=performance.now();
   renderer.render(scene,camera)})();
 /* ---------- AR camera ---------- */
 var stream=null;function onOri(e){if(e.gamma==null)return;gyro.x=clamp(e.gamma/45,-1,1)*.35;gyro.y=clamp((e.beta-60)/45,-1,1)*.25}
-function exitAR(){inAR=false;document.body.classList.remove("ar");if(stream){stream.getTracks().forEach(function(t){t.stop()});stream=null}$("cam").style.display="none";removeEventListener("deviceorientation",onOri);tScale=1;scrollTo(0,0)}
+function exitAR(){leaveAR();inAR=false;document.body.classList.remove("ar");if(stream){stream.getTracks().forEach(function(t){t.stop()});stream=null}$("cam").style.display="none";removeEventListener("deviceorientation",onOri);tScale=1;scrollTo(0,0)}
 $("exitAR").onclick=exitAR;
 $("bar").onclick=function(){
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){toast("Camera isn’t available here. Open this page in Chrome or Safari.");return}
   navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false}).then(function(s){
-    stream=s;var v=$("cam");v.srcObject=s;v.style.display="block";v.play&&v.play();scrollTo(0,0);inAR=true;document.body.classList.add("ar");tScale=.8;
+    stream=s;var v=$("cam");v.srcObject=s;v.style.display="block";v.play&&v.play();scrollTo(0,0);inAR=true;document.body.classList.add("ar");enterAR();
     if(window.DeviceOrientationEvent){if(typeof DeviceOrientationEvent.requestPermission==="function"){DeviceOrientationEvent.requestPermission().then(function(r){if(r==="granted")addEventListener("deviceorientation",onOri)}).catch(function(){})}else addEventListener("deviceorientation",onOri)}
   }).catch(function(){toast("Camera is blocked. Allow camera access for this page, then tap AR view again.")})};
 /* ---------- place on table: real AR (Android Scene Viewer / WebXR, iPhone Quick Look) ---------- */
@@ -259,7 +294,7 @@ var mob=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 $("btab").onclick=function(){var m=$("mv");
   if(m&&m.activateAR&&m.canActivateAR){m.activateAR();return}
   if(m&&!m.getAttribute("src"))m.setAttribute("src","card.glb");
-  if(m&&m.activateAR&&!m.loaded){toast("Loading the 3D card… tap again in a second.");return}
+  if(m&&m.activateAR&&!m.loaded){toast("Loading the 3D board… tap again in a second.");return}
   if(!mob){toast("Open this page on your phone to place the card on a table.");return}
   toast("Table AR isn’t supported on this phone. Using camera view.");$("bar").click()};
 try{if("serviceWorker" in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js")}catch(e){}
